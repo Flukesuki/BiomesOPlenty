@@ -22,27 +22,24 @@ apply plugin: 'maven'
 ext.configFile = file "build.properties"
 
 configFile.withReader {
-    // read config.  it shall from now on be referenced as simply config or as project.config
     def prop = new Properties()
     prop.load(it)
     project.ext.config = new ConfigSlurper().parse prop
 }
 
 group = "com.github.glitchfiend.biomesoplenty"
-// why set the version twice?
-version = config.mod_version
 archivesBaseName = "BiomesOPlenty"
-
-// add some stuff to the version
-version = "${config.minecraft_version}-${config.mod_version}.${System.getenv().BUILD_NUMBER}"
-// set this for the version.properties file, or was this broken on purpose?
-config.build_number = (System.getenv().BUILD_NUMBER) ? System.getenv().BUILD_NUMBER : ""
+version = config.mod_version
+version = "${config.minecraft_version}-${config.mod_version}"
 
 minecraft {
-    version = "1.12.2-14.23.5.2779"
+    version = config.minecraft_version + "-" + config.forge_version
     useDepAts = true
-    mappings = "snapshot_20171003"
+    mappings = config.mappings_version
     runDir = "run"
+    replace '@MOD_VERSION@', config.mod_version
+    replace '1.0.0.0', config.forge_version
+    replaceIn 'BiomesOPlenty.java'
 }
 
 def commonManifest = {
