@@ -565,10 +565,18 @@ public class ChunkGeneratorOverworldBOP implements IChunkGenerator
         Biome.decorate(this.world, this.rand, new BlockPos(x, 0, z));
         
         // add animals
-        if (TerrainGen.populate(this, world, rand, chunkX, chunkZ, hasVillageGenerated, ANIMALS))
-        {
-            WorldEntitySpawner.performWorldGenSpawning(this.world, Biome, x + 8, z + 8, 16, 16, this.rand);
+        if (TerrainGen.populate(this, world, rand, chunkX, chunkZ, hasVillageGenerated, ANIMALS)) {
+            List<Biome.SpawnListEntry> spawnList = Biome.getSpawnableList(EnumCreatureType.CREATURE);
+            if (!spawnList.isEmpty()) {
+                try {
+                    WorldEntitySpawner.performWorldGenSpawning(this.world, Biome, x + 8, z + 8, 16, 16, this.rand);
+                } catch (IllegalArgumentException e) {
+                    System.err.println("生物生成时发生异常：" + e.getMessage());
+                }
+            }
         }
+
+
         
         // add ice and snow
         if (TerrainGen.populate(this, world, rand, chunkX, chunkZ, hasVillageGenerated, ICE))

@@ -43,10 +43,6 @@ minecraft {
     useDepAts = true
     mappings = "snapshot_20171003"
     runDir = "run"
-    def buildnum = (config.build_number!="") ? '.' + config.build_number : ""
-    replace '@MOD_VERSION@', config.mod_version + buildnum
-    replace '1.0.0.0', config.forge_version
-    replaceIn 'BiomesOPlenty.java'
 }
 
 def commonManifest = {
