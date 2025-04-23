@@ -23,3 +23,9 @@ jobs:
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build --stacktrace --info
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-output
+        path: build/libs/*.jar
